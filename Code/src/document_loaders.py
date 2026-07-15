@@ -1,4 +1,4 @@
-"""Document loading for Markdown, text, PDF, and DOCX source material."""
+"""Document loading for Markdown, text, PDF, DOCX, and local image material."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from typing import Iterable
 from .utils import utc_timestamp
 
 
-SUPPORTED_EXTENSIONS = {".md", ".txt", ".pdf", ".docx"}
+SUPPORTED_EXTENSIONS = {".md", ".txt", ".pdf", ".docx", ".png", ".jpg", ".jpeg"}
 
 
 @dataclass(frozen=True)
@@ -27,6 +27,7 @@ def _base_metadata(path: Path, subject_key: str) -> dict[str, str]:
         "source_path": str(path),
         "source_name": path.name,
         "source_type": path.suffix.lower().lstrip("."),
+        "source_layer": "local_material",
         "loaded_at": utc_timestamp(),
     }
 
@@ -49,6 +50,7 @@ def load_pdf_document(path: Path, subject_key: str) -> list[LoadedDocument]:
     for page_index, page in enumerate(reader.pages, start=1):
         metadata = _base_metadata(path, subject_key)
         metadata["page_number"] = page_index
+        metadata["modality"] = "pdf_text"
         documents.append(LoadedDocument(text=page.extract_text() or "", metadata=metadata))
     return documents
 
@@ -65,15 +67,49 @@ def load_docx_document(path: Path, subject_key: str) -> list[LoadedDocument]:
     return [LoadedDocument(text="\n".join(paragraphs), metadata=_base_metadata(path, subject_key))]
 
 
-def load_document(path: Path, subject_key: str) -> list[LoadedDocument]:
+def load_image_document(path: Path, subject_key: str, config=None) -> list[LoadedDocument]:
+    """Load an image as OCR and local vision text when possible."""
+    from .config import load_config
+    from .image_understanding import describe_image_safe
+    from .ocr import ocr_image_safe
+
+    app_config = config or load_config()
+    documents: list[LoadedDocument] = []
+    if getattr(app_config, "enable_ocr", True):
+        text, warning = ocr_image_safe(path, getattr(app_config, "ocr_languages", "deu+eng+fra"))
+        metadata = _base_metadata(path, subject_key)
+        metadata["modality"] = "ocr_text"
+        if warning:
+            metadata["ocr_warning"] = warning
+        documents.append(LoadedDocument(text=text, metadata=metadata))
+    if getattr(app_config, "enable_image_understanding", True):
+        description, warning = describe_image_safe(path, subject_key, app_config)
+        metadata = _base_metadata(path, subject_key)
+        metadata["modality"] = "image_description"
+        if warning:
+            metadata["vision_warning"] = warning
+        documents.append(LoadedDocument(text=description, metadata=metadata))
+    return documents
+
+
+def load_document(path: Path, subject_key: str, config=None) -> list[LoadedDocument]:
     """Load one supported file and attach source metadata."""
     suffix = path.suffix.lower()
     if suffix in {".md", ".txt"}:
         return load_text_document(path, subject_key)
     if suffix == ".pdf":
+        if config is not None and getattr(config, "enable_pdf_page_rendering", True):
+            try:
+                from .multimodal_pdf import load_pdf_multimodal
+
+                return load_pdf_multimodal(path, subject_key, config)
+            except Exception:
+                return load_pdf_document(path, subject_key)
         return load_pdf_document(path, subject_key)
     if suffix == ".docx":
         return load_docx_document(path, subject_key)
+    if suffix in {".png", ".jpg", ".jpeg"}:
+        return load_image_document(path, subject_key, config=config)
     raise ValueError(f"Unsupported file type: {path.suffix}")
 
 
@@ -81,16 +117,16 @@ def iter_material_files(folders: Iterable[Path]) -> list[Path]:
     """Return supported material files from the given folders."""
     files: list[Path] = []
     for folder in folders:
-        if folder.exists():
-            # Sorting makes indexing predictable for testing and debugging.
+        if folder.exists() and folder.is_file() and folder.suffix.lower() in SUPPORTED_EXTENSIONS:
+            files.append(folder)
+        elif folder.exists():
             files.extend(sorted(path for path in folder.rglob("*") if path.suffix.lower() in SUPPORTED_EXTENSIONS))
     return files
 
 
-def load_subject_documents(subject_key: str, folders: Iterable[Path]) -> list[LoadedDocument]:
+def load_subject_documents(subject_key: str, folders: Iterable[Path], config=None) -> list[LoadedDocument]:
     """Load all supported source files for a subject."""
     documents: list[LoadedDocument] = []
     for path in iter_material_files(folders):
-        documents.extend(load_document(path, subject_key))
+        documents.extend(load_document(path, subject_key, config=config))
     return documents
-

@@ -12,6 +12,11 @@ class HashEmbeddingFunction:
 
     dimension: int = 64
 
+
+    def name(self) -> str:
+        """Return a Chroma-compatible embedding function name."""
+        return "default"
+
     def __call__(self, input: list[str]) -> list[list[float]]:  # Chroma expects the parameter name ``input``.
         """Return simple normalized vectors for a list of texts."""
         return [self.embed_text(text) for text in input]

@@ -119,7 +119,7 @@ Note: tests were run in the current shell with Python 3.13. The documented targe
 - Install and verify the full Conda environment with the exact package versions.
 - Manually check each Streamlit UI page in the browser.
 - Confirm Chroma persistence with real local files and multiple subject collections.
-- Pull and configure the actual local DeepSeek Distilled Ollama model.
+- Pull and configure the required local Gemma 3 4B Ollama model (`gemma3:4b`).
 - Test chatbot, quiz, exam, plan, and grader features against the real Ollama model.
 - Add private school material to subject folders and build each subject database.
 - Add stronger PDF and DOCX fixture coverage.

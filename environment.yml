@@ -1,29 +1,26 @@
-name: alim-study-assistant
+name: alim_study_assistant
 channels:
   - conda-forge
 dependencies:
   - python=3.11
   - pip
   - pip:
-      # Web app / UI
       - streamlit==1.59.0
-
-      # Local RAG / vector database
-      - chromadb==1.5.9
-      - sentence-transformers==5.6.0
-
-      # LLM clients
-      - ollama==0.6.2
-      - google-genai==2.10.0
-      - openai
-
-      # Utilities
       - python-dotenv==1.2.2
       - requests==2.34.2
       - pandas==3.0.3
-
-      # PDF support, optional but useful later
+      - chromadb==1.5.9
+      - sentence-transformers==5.6.0
+      - ollama==0.6.2
       - pypdf==6.14.2
-
-      # Testing
+      - python-docx==1.2.0
       - pytest==9.1.1
+      - pymupdf==1.26.3
+      - pillow==12.0.0
+      - pytesseract==0.3.13
+      - beautifulsoup4==4.14.2
+      - trafilatura==2.0.0
+      - ddgs==9.9.1
+      - streamlit-mic-recorder==0.0.8
+      - faster-whisper==1.2.1
+      - soundfile==0.13.1

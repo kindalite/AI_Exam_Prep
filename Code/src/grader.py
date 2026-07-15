@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .llm_client import LLMResponse, generate_response
+from .performance_tracker import new_attempt, save_practice_attempt
 from .prompts import build_grading_prompt, build_system_prompt
 from .retrieval import load_exam_criteria, retrieve_for_subject
 from .subject_registry import Subject
@@ -29,6 +30,24 @@ def calculate_grade(points_achieved: float, maximum_points: float) -> GradeResul
     return GradeResult(points_achieved, maximum_points, round(grade, 2))
 
 
+def store_grading_attempt(subject: Subject, question: str, student_answer: str, feedback: str, points: float, maximum_points: float, config) -> dict:
+    """Store a graded practice attempt locally."""
+    grade = calculate_grade(points, maximum_points).grade
+    attempt = new_attempt(
+        subject_key=subject.key,
+        topic=question[:80],
+        feature="grader",
+        difficulty="manual",
+        question=question,
+        student_answer=student_answer,
+        model_feedback=feedback,
+        points_achieved=points,
+        maximum_points=maximum_points,
+        grade=grade,
+    )
+    return save_practice_attempt(attempt, config)
+
+
 def create_grading_feedback(
     subject: Subject,
     language: str,
@@ -47,4 +66,3 @@ def create_grading_feedback(
     if not call_llm:
         return LLMResponse(prompt, True)
     return generate_response(prompt, build_system_prompt(subject, language))
-
