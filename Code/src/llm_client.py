@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import base64
+import requests
 from dataclasses import dataclass
 from pathlib import Path
 
-import requests
-
 from .config import AppConfig, load_config
+from .model_runtime import build_chat_payload, get_ollama_session
+from .performance_monitor import measure_operation
 from .token_budget import assert_prompt_under_limit
 
 
@@ -26,16 +27,10 @@ def _encode_image(path: Path) -> str:
     return base64.b64encode(path.read_bytes()).decode("ascii")
 
 
-def build_ollama_payload(prompt: str, system_prompt: str | None, model: str, images: list[Path] | None = None) -> dict:
+def build_ollama_payload(prompt: str, system_prompt: str | None, model: str, images: list[Path] | None = None, stream: bool = False) -> dict:
     """Build the JSON payload expected by Ollama's chat API."""
-    messages = []
-    if system_prompt:
-        messages.append({"role": "system", "content": system_prompt})
-    user_message: dict = {"role": "user", "content": prompt}
-    if images:
-        user_message["images"] = [_encode_image(Path(image)) for image in images]
-    messages.append(user_message)
-    return {"model": model, "messages": messages, "stream": False}
+    encoded_images = [_encode_image(Path(image)) for image in images] if images else None
+    return build_chat_payload(prompt, system_prompt, model, stream=stream, images=encoded_images)
 
 
 def _missing_model_message(model: str) -> str:
@@ -67,11 +62,12 @@ def generate_response(
     except OSError as exc:
         return LLMResponse("", False, f"Could not read local image for Ollama: {exc}")
     try:
-        response = requests.post(url, json=payload, timeout=60)
-        if response.status_code == 404:
-            return LLMResponse("", False, _missing_model_message(model))
-        response.raise_for_status()
-        data = response.json()
+        with measure_operation(app_config, "ollama_chat", model):
+            response = get_ollama_session().post(url, json=payload, timeout=60)
+            if response.status_code == 404:
+                return LLMResponse("", False, _missing_model_message(model))
+            response.raise_for_status()
+            data = response.json()
         return LLMResponse(data.get("message", {}).get("content", ""), True)
     except requests.RequestException as exc:
         message = str(exc)

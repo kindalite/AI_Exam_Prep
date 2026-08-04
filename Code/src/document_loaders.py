@@ -9,7 +9,7 @@ from typing import Iterable
 from .utils import utc_timestamp
 
 
-SUPPORTED_EXTENSIONS = {".md", ".txt", ".pdf", ".docx", ".png", ".jpg", ".jpeg"}
+SUPPORTED_EXTENSIONS = {".md", ".txt", ".pdf", ".docx", ".png", ".jpg", ".jpeg", ".svg"}
 
 
 @dataclass(frozen=True)
@@ -67,6 +67,29 @@ def load_docx_document(path: Path, subject_key: str) -> list[LoadedDocument]:
     return [LoadedDocument(text="\n".join(paragraphs), metadata=_base_metadata(path, subject_key))]
 
 
+def load_svg_document(path: Path, subject_key: str) -> list[LoadedDocument]:
+    """Safely load readable SVG text and metadata without executing content."""
+    import xml.etree.ElementTree as ET
+
+    raw = path.read_text(encoding="utf-8", errors="replace")
+    metadata = _base_metadata(path, subject_key)
+    metadata["modality"] = "svg_text"
+    lowered = raw.lower()
+    if "<script" in lowered or "javascript:" in lowered:
+        metadata["svg_warning"] = "Unsafe SVG script content was ignored during indexing."
+    try:
+        root = ET.fromstring(raw)
+    except ET.ParseError as exc:
+        metadata["svg_warning"] = f"SVG metadata parse failed: {exc}"
+        return [LoadedDocument(text="", metadata=metadata)]
+    texts: list[str] = []
+    for element in root.iter():
+        tag = element.tag.rsplit("}", 1)[-1].lower()
+        if tag in {"title", "desc", "text", "tspan"} and element.text and element.text.strip():
+            texts.append(element.text.strip())
+    return [LoadedDocument(text="\n".join(texts), metadata=metadata)]
+
+
 def load_image_document(path: Path, subject_key: str, config=None) -> list[LoadedDocument]:
     """Load an image as OCR and local vision text when possible."""
     from .config import load_config
@@ -110,6 +133,8 @@ def load_document(path: Path, subject_key: str, config=None) -> list[LoadedDocum
         return load_docx_document(path, subject_key)
     if suffix in {".png", ".jpg", ".jpeg"}:
         return load_image_document(path, subject_key, config=config)
+    if suffix == ".svg":
+        return load_svg_document(path, subject_key)
     raise ValueError(f"Unsupported file type: {path.suffix}")
 
 

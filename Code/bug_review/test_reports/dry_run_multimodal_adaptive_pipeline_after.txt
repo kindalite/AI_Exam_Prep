@@ -1,0 +1,4 @@
+PASS: fake multimodal documents chunked and retrieved
+PASS: fake performance selected adaptive difficulty easy
+PASS: multimodal adaptive prompt built
+

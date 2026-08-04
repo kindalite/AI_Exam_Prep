@@ -24,3 +24,4 @@ dependencies:
       - streamlit-mic-recorder==0.0.8
       - faster-whisper==1.2.1
       - soundfile==0.13.1
+      - torchvision==0.28.0

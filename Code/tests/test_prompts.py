@@ -17,3 +17,4 @@ def test_chat_prompt_contains_subject_language_sources_and_rules(temp_config) ->
     assert "Criteria" in prompt
     assert "Use only the provided" in system_prompt
     assert "insufficient" in system_prompt
+    assert "From your materials" in system_prompt

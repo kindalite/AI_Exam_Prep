@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .config import AppConfig, load_config
+from .subject_languages import language_for_subject
 from .utils import ensure_directory, write_text_if_missing
 
 
@@ -31,7 +32,8 @@ SUBJECT_DEFINITIONS: tuple[tuple[str, str, str, str], ...] = (
     ("political_education", "Political Education", "German", "Analyze political education material and connect answers to course criteria."),
     ("philosophy", "Philosophy", "German", "Explain arguments clearly and connect ideas to the treated material."),
     ("pedagogics_psychology", "Pedagogics/Psychology", "German", "Use course concepts to analyze examples and answer exam-style questions."),
-    ("maths_physics", "Maths/Physics", "English", "Generate similar problems, show correct methods, and include final answers."),
+    ("mathematics", "Mathematics", "English", "Generate similar problems, show correct methods, and include final answers."),
+    ("physics", "Physics", "English", "Explain physical ideas, solve problems step by step, and connect formulas to units and experiments."),
     ("history", "History", "English", "Place events and texts in historical context and test all given material."),
     ("german", "German", "German", "Create vocabulary quizlets, class-style literature questions, and writing feedback."),
     ("french", "French", "French", "Use simple B1 French for vocabulary, grammar explanations, and similar exercises."),
@@ -49,7 +51,7 @@ def build_subject_registry(config: AppConfig | None = None) -> dict[str, Subject
         subjects[key] = Subject(
             key=key,
             display_name=display_name,
-            default_language=language,
+            default_language=language_for_subject(key, language),
             notes_dir=subject_dir / "notes",
             syllabus_dir=subject_dir / "syllabus",
             criteria_dir=subject_dir / "criteria",

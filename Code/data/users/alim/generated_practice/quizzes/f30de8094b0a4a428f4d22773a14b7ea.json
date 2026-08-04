@@ -1,0 +1,17 @@
+{
+  "practice_id": "f30de8094b0a4a428f4d22773a14b7ea",
+  "user_id": "alim",
+  "subject_key": "history",
+  "mode": "quiz",
+  "timestamp": "2026-07-16T20:55:19+00:00",
+  "language": "English",
+  "topic": "moleküle",
+  "learning_goal": null,
+  "difficulty_requested": "adaptive",
+  "difficulty_used": "easy",
+  "timer_seconds": 1200,
+  "question_set": "Adaptive difficulty selected: easy.\n## prompt\nCreate a easy quiz for History in English.\nLearning goal: moleküle\nNumber of questions: 5\nAdaptive performance context: Performance records: 0. Average grade: None. Recommended adaptive difficulty for 'moleküle\nNumber of questions: 5': easy. Focus topics: No weak topics recorded yet.\nFocus topics: No focus topics recorded yet.\nSubject criteria: # Exam Criteria: History\n\nAdd teacher criteria and grading expectations here.\n\nSource context: No source context was found.\n\nInclude questions, answer key, short explanations, and source references. Source priority rules:\n1. Use teacher-provided/user-provided learning material and exam criteria first.\n2. Use user learning goals second.\n3. Use official KSA/Lucerne syllabus sources only to fill gaps.\n4. Use public web sources only when internet mode is enabled.\n5. Use general model knowledge only when needed and clearly label it as general background.\nSay clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain. Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. Do not invent exam rules that are not present in the sources.",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/f30de8094b0a4a428f4d22773a14b7ea.json",
+  "visibility": "user_visible",
+  "sources": []
+}

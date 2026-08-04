@@ -1,0 +1,10 @@
+PASS: imported app
+PASS: imported src.config
+PASS: imported src.subject_registry
+PASS: imported src.chunking
+PASS: imported src.prompts
+PASS: imported src.grader
+PASS: created sample chunk
+PASS: built chat prompt
+PASS: calculated grading formula
+

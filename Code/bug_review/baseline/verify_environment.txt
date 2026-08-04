@@ -1,0 +1,22 @@
+PASS: Python 3.11.15
+PASS: Executable is in target env: /home/kindalite/anaconda3/envs/alim_study_assistant/bin/python
+PASS: required package imports: streamlit
+PASS: required package imports: requests
+PASS: required package imports: pandas
+PASS: required package imports: chromadb
+PASS: required package imports: sentence_transformers
+PASS: required package imports: ollama
+PASS: required package imports: pypdf
+PASS: required package imports: docx
+PASS: required package imports: pytest
+PASS: optional package imports: fitz
+PASS: optional package imports: PIL
+PASS: optional package imports: pytesseract
+PASS: optional package imports: bs4
+PASS: optional package imports: trafilatura
+PASS: optional package imports: ddgs
+PASS: optional package imports: faster_whisper
+PASS: optional package imports: soundfile
+PASS: .env.example configures OLLAMA_MODEL=gemma3:4b
+PASS: app imports
+

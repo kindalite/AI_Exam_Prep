@@ -11,8 +11,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.config import load_config
+from src.dependency_health import check_torchvision_compatibility
 
-REQUIRED = ["streamlit", "requests", "pandas", "chromadb", "sentence_transformers", "ollama", "pypdf", "docx", "pytest"]
+REQUIRED = ["streamlit", "requests", "pandas", "chromadb", "sentence_transformers", "ollama", "pypdf", "docx", "pytest", "torchvision"]
 OPTIONAL = ["fitz", "PIL", "pytesseract", "bs4", "trafilatura", "ddgs", "faster_whisper", "soundfile"]
 
 
@@ -50,6 +51,10 @@ def main() -> int:
             failures += 1
     for package in OPTIONAL:
         line("PASS" if can_import(package) else "WARN", f"optional package {'imports' if can_import(package) else 'not installed'}: {package}")
+    torch_check = check_torchvision_compatibility()
+    line("PASS" if torch_check.ok else "FAIL", torch_check.message)
+    if not torch_check.ok:
+        failures += 1
     env_example = PROJECT_ROOT / ".env.example"
     if env_example.exists() and "OLLAMA_MODEL=gemma3:4b" in env_example.read_text(encoding="utf-8"):
         line("PASS", ".env.example configures OLLAMA_MODEL=gemma3:4b")

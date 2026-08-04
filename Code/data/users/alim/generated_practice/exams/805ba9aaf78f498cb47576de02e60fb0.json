@@ -1,0 +1,17 @@
+{
+  "practice_id": "805ba9aaf78f498cb47576de02e60fb0",
+  "user_id": "alim",
+  "subject_key": "chemistry",
+  "mode": "exam",
+  "timestamp": "2026-07-27T07:37:29+00:00",
+  "language": "English",
+  "topic": "molecules",
+  "learning_goal": null,
+  "difficulty_requested": "adaptive",
+  "difficulty_used": "easy",
+  "timer_seconds": 2700,
+  "question_set": "Adaptive difficulty selected: easy.\n## prompt\nCreate a easy mock exam for Chemistry in English.\nTotal points: 50\nLearning goals: # Learning Goals: Chemistry\n\nAdd exam learning goals here.\n\nCriteria: # Exam Criteria: Chemistry\n\nAdd teacher criteria and grading expectations here.\n\nAdaptive performance context: Performance records: 3. Average grade: None. Recommended adaptive difficulty for 'mock exam Chemistry adaptive': easy. Focus topics: No weak topics recorded yet.\nSource context: No source context was found.\n\nInclude exam paper, marking scheme, model answers, point allocation, and sources. Source priority rules:\n1. Use teacher-provided/user-provided learning material and exam criteria first.\n2. Use user learning goals second.\n3. Use official KSA/Lucerne syllabus sources only to fill gaps.\n4. Use public web sources only when internet mode is enabled.\n5. Use general model knowledge only when needed and clearly label it as general background.\nSay clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain. Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. Do not invent exam rules that are not present in the sources.",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/805ba9aaf78f498cb47576de02e60fb0.json",
+  "visibility": "user_visible",
+  "sources": []
+}

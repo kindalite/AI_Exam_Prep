@@ -10,7 +10,7 @@ def test_environment_and_requirements_are_consistent() -> None:
     env = (root / "environment.yml").read_text(encoding="utf-8")
     reqs = [line.strip() for line in (root / "requirements.txt").read_text(encoding="utf-8").splitlines() if line.strip()]
     assert "name: alim_study_assistant" in env
-    for requirement in ["streamlit==1.59.0", "ollama==0.6.2", "pytest==9.1.1"]:
+    for requirement in ["streamlit==1.59.0", "ollama==0.6.2", "pytest==9.1.1", "torchvision==0.28.0"]:
         assert requirement in reqs
         assert requirement in env
 

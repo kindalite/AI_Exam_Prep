@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .config import load_config
+from .subject_languages import language_instruction
 from .subject_registry import Subject
 from .token_budget import ContextSection, assert_prompt_under_limit, budget_context_sections
 
@@ -18,7 +19,7 @@ Say clearly when user material is missing or insufficient. Show sources. Do not 
 SOURCE_RULES = (
     "Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. "
     "If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. "
-    "Do not invent exam rules that are not present in the sources."
+    "Do not invent exam rules that are not present in the sources. Every answer must group evidence under these exact headings when applicable: From your materials; From the official Lucerne/KSA syllabus; From approved online sources; Model inference/general background. State missing or conflicting evidence explicitly."
 )
 
 
@@ -37,7 +38,7 @@ def build_system_prompt(subject: Subject, language: str) -> str:
     """Create a reusable system prompt for one subject and language."""
     prompt = (
         f"You are Alim Study Assistant for {subject.display_name}. "
-        f"Answer in {language}. Subject instructions: {subject.instructions}\n{SOURCE_PRIORITY_RULES}\n{SOURCE_RULES}"
+        f"{language_instruction(language)} Subject instructions: {subject.instructions}\n{SOURCE_PRIORITY_RULES}\n{SOURCE_RULES}"
     )
     return _finalize_prompt(prompt)
 

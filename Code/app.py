@@ -16,16 +16,19 @@ from src.chat_history_store import new_chat_message, save_chat_message, save_cha
 from src.feedback import save_feedback
 from src.grader import calculate_grade, create_grading_feedback, store_grading_attempt
 from src.image_understanding import describe_image_safe
+from src.app_logging import append_log, new_app_run_log, new_user_session_log
 from src.material_router import discover_learning_material, group_material_by_subject
 from src.ocr import ocr_image_safe
 from src.performance_tracker import new_attempt, save_practice_attempt
 from src.prompts import build_multimodal_chat_prompt, build_system_prompt
 from src.llm_client import generate_response
+from src.model_runtime import verify_model_runtime, warm_model
 from src.mock_exam_generator import create_mock_exam
 from src.quiz_generator import create_quiz
 from src.retrieval import build_subject_index, load_exam_criteria, load_learning_goals, retrieve_study_context
 from src.stats import average_grade, desired_grade_points, grade_table, practice_grade_row, recent_attempts_table, subject_performance_summary
 from src.study_plan_generator import create_study_plan
+from src.subject_languages import language_for_subject
 from src.subject_registry import build_subject_registry, setup_subject_folders, subjects_for_display
 from src.syllabus_fetcher import ensure_subject_syllabus_cached
 from src.ui_auth import require_login
@@ -48,9 +51,8 @@ def _selected_subject():
     subject_names = [subject.display_name for subject in subjects]
     selected_name = st.sidebar.selectbox("Subject", subject_names)
     subject = next(item for item in subjects if item.display_name == selected_name)
-    languages = ["German", "English", "French"]
-    default_index = languages.index(subject.default_language) if subject.default_language in languages else 0
-    language = st.sidebar.selectbox("Language", languages, index=default_index)
+    language = language_for_subject(subject.key, subject.default_language)
+    st.sidebar.caption(f"Response language: {language} (automatic for {subject.display_name})")
     st.sidebar.caption(f"Local model: {config.ollama_model}")
     return config, subject, language
 
@@ -65,9 +67,22 @@ def _save_uploaded_file(uploaded_file, folder: Path) -> Path:
 
 def render_home() -> None:
     """Render the home page."""
-    st.title("Alim Study Assistant")
+    st.title("Alim’s Study Assistant")
     st.write("Local exam preparation with retrieval, quizzes, mock exams, planning, grading, multimodal inputs, syllabus fallback, and adaptive practice memory.")
     st.info("Private notes, images, and audio stay local. Public web retrieval is only used when you enable it.")
+
+
+def render_model_runtime_panel(config) -> None:
+    """Show local model status and optional warm-up control."""
+    status = verify_model_runtime(config)
+    if status.ok:
+        st.success(status.message)
+    else:
+        st.warning(status.message)
+    if st.button("Warm local model"):
+        with st.spinner("Warming the local model..."):
+            warmed = warm_model(config)
+        st.success(warmed.message) if warmed.ok else st.warning(warmed.message)
 
 
 def render_ingestion(subject, config) -> None:
@@ -77,7 +92,7 @@ def render_ingestion(subject, config) -> None:
     st.write(f"External learning material root: `{config.learning_material_root}`")
     st.write("Root exists." if config.learning_material_root and config.learning_material_root.exists() else "Root not found yet.")
 
-    uploaded_files = st.file_uploader("Add MD, TXT, PDF, DOCX, PNG, or JPG material", accept_multiple_files=True, type=["md", "txt", "pdf", "docx", "png", "jpg", "jpeg"])
+    uploaded_files = st.file_uploader("Add MD, TXT, PDF, DOCX, PNG, or JPG material", accept_multiple_files=True, type=["md", "txt", "pdf", "docx", "png", "jpg", "jpeg", "svg"])
     if uploaded_files:
         subject.notes_dir.mkdir(parents=True, exist_ok=True)
         for uploaded_file in uploaded_files:
@@ -96,10 +111,12 @@ def render_ingestion(subject, config) -> None:
         st.caption("No external supported files discovered yet.")
 
     if st.button("Fetch/cache official KSA/Lucerne syllabus for this subject"):
-        docs = ensure_subject_syllabus_cached(subject, config)
+        with st.spinner("Fetching and caching the official syllabus..."):
+            docs = ensure_subject_syllabus_cached(subject, config)
         st.success(f"Cached {len(docs)} syllabus document(s) for {subject.display_name}.")
     if st.button("Build or rebuild subject database"):
-        count = build_subject_index(subject, config)
+        with st.spinner("Indexing subject material..."):
+            count = build_subject_index(subject, config)
         st.success(f"Indexed {count} chunks for {subject.display_name}.")
 
 
@@ -136,7 +153,8 @@ def render_chat(subject, language, config, user_id: str) -> None:
             st.text_area("Audio transcript", value=audio_transcript, height=120)
 
         search_query = "\n".join(part for part in [question, audio_transcript, image_ocr, image_description] if part).strip()
-        study_context = retrieve_study_context(subject, search_query or subject.display_name, config=config, include_syllabus=use_syllabus, include_web=use_web, include_performance=True)
+        with st.spinner("Retrieving local material, syllabus, and approved sources..."):
+            study_context = retrieve_study_context(subject, search_query or subject.display_name, config=config, include_syllabus=use_syllabus, include_web=use_web, include_performance=True)
         prompt = build_multimodal_chat_prompt(
             subject,
             language,
@@ -152,7 +170,8 @@ def render_chat(subject, language, config, user_id: str) -> None:
             image_description,
             warnings + study_context.warnings,
         )
-        response = generate_response(prompt, build_system_prompt(subject, language), config=config)
+        with st.spinner("Generating grounded answer with the local model..."):
+            response = generate_response(prompt, build_system_prompt(subject, language), config=config)
         if response.ok:
             st.markdown(response.text)
             save_practice_attempt(new_attempt(subject_key=subject.key, topic=question[:80], feature="chat", difficulty="adaptive", question=question, model_feedback=response.text), config)
@@ -276,12 +295,19 @@ def main() -> None:
     _require_streamlit()
     config = load_config(Path(__file__).resolve().parent)
     setup_subject_folders(config)
-    st.set_page_config(page_title="Alim Study Assistant", layout="wide")
+    st.set_page_config(page_title="Alim’s Study Assistant", layout="wide")
     st.markdown("<style>:root{--primary-color:#2563eb;} .stButton button{border-radius:6px;} section[data-testid=stSidebar]{background:#eff6ff;}</style>", unsafe_allow_html=True)
     user = require_login(config)
     if user is None:
         return
     user_id = user["user_id"]
+    if "app_run_log" not in st.session_state:
+        st.session_state["app_run_log"] = str(new_app_run_log(config))
+        append_log(Path(st.session_state["app_run_log"]), "app_started", {"model": config.ollama_model})
+    if "user_session_log" not in st.session_state:
+        st.session_state["user_session_log"] = str(new_user_session_log(config, user_id))
+        append_log(Path(st.session_state["user_session_log"]), "user_session_started", {"user_id": user_id})
+    render_model_runtime_panel(config)
     config, subject, language = _selected_subject()
     page = st.sidebar.radio("Main menu", page_labels())
     if page == "Home":
