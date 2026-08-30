@@ -1,0 +1,11 @@
+.......................................................................  [100%]
+=============================== warnings summary ===============================
+tests/features/test_timed_quiz_exam_flow.py::test_timed_quiz_exam_flow
+tests/features/test_timed_quiz_exam_flow.py::test_timed_quiz_exam_flow
+tests/test_timed_practice.py::test_timed_practice_flow_hides_then_reveals_solution
+  /home/kindalite/anaconda3/envs/alim_study_assistant/lib/python3.11/site-packages/chromadb/api/collection_configuration.py:327: DeprecationWarning: legacy embedding function config: 'HashEmbeddingFunction' object has no attribute 'is_legacy'
+    return json.dumps(create_collection_configuration_to_json(config, metadata))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+71 passed, 3 warnings in 9.78s
+

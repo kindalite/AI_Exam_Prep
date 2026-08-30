@@ -1,0 +1,17 @@
+{
+  "practice_id": "38f1c38b0b53448482765bea6a7e7a87",
+  "user_id": "alim",
+  "subject_key": "history",
+  "mode": "exam",
+  "timestamp": "2026-07-16T21:04:57+00:00",
+  "language": "English",
+  "topic": "communism",
+  "learning_goal": null,
+  "difficulty_requested": "adaptive",
+  "difficulty_used": "easy",
+  "timer_seconds": 2700,
+  "question_set": "Adaptive difficulty selected: easy.\n## prompt\nCreate a easy mock exam for History in English.\nTotal points: 50\nLearning goals: # Learning Goals: History\n\nAdd exam learning goals here.\n\nCriteria: # Exam Criteria: History\n\nAdd teacher criteria and grading expectations here.\n\nAdaptive performance context: Performance records: 1. Average grade: None. Recommended adaptive difficulty for 'mock exam History adaptive': easy. Focus topics: No weak topics recorded yet.\nSource context: No source context was found.\n\nInclude exam paper, marking scheme, model answers, point allocation, and sources. Source priority rules:\n1. Use teacher-provided/user-provided learning material and exam criteria first.\n2. Use user learning goals second.\n3. Use official KSA/Lucerne syllabus sources only to fill gaps.\n4. Use public web sources only when internet mode is enabled.\n5. Use general model knowledge only when needed and clearly label it as general background.\nSay clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain. Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. Do not invent exam rules that are not present in the sources.",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/38f1c38b0b53448482765bea6a7e7a87.json",
+  "visibility": "user_visible",
+  "sources": []
+}

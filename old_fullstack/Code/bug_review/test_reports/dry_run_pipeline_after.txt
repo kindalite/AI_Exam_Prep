@@ -1,0 +1,74 @@
+DRY RUN: retrieved chunks
+- biology_sample.md score=0.68
+
+CHAT PROMPT
+
+## prompt
+Subject: SPF Biology
+Language: German
+
+Source priority rules:
+1. Use teacher-provided/user-provided learning material and exam criteria first.
+2. Use user learning goals second.
+3. Use official KSA/Lucerne syllabus sources only to fill gaps.
+4. Use public web sources only when internet mode is enabled.
+5. Use general model knowledge only when needed and clearly label it as general background.
+Say clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain.
+
+Learning goals:
+Cell learning goal
+
+Exam criteria:
+Use source material.
+
+Retrieved source context:
+# Biology Sample
+
+Cells contain a nucleus, cytoplasm, and membranes. The nucleus stores DNA and helps control cell activity.
+
+Student question:
+Was ist die Aufgabe des Zellkerns?
+
+Task: Answer clearly, explain the reasoning, and list useful source names.
+
+QUIZ PROMPT
+
+## prompt
+Create a medium quiz for SPF Biology in German.
+Learning goal: Cell structure
+Adaptive performance context: No performance context.
+Focus topics: No focus topics recorded yet.
+Subject criteria: Use source material.
+Source context: # Biology Sample
+
+Cells contain a nucleus, cytoplasm, and membranes. The nucleus stores DNA and helps control cell activity.
+
+Include questions, answer key, short explanations, and source references. Source priority rules:
+1. Use teacher-provided/user-provided learning material and exam criteria first.
+2. Use user learning goals second.
+3. Use official KSA/Lucerne syllabus sources only to fill gaps.
+4. Use public web sources only when internet mode is enabled.
+5. Use general model knowledge only when needed and clearly label it as general background.
+Say clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain. Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. Do not invent exam rules that are not present in the sources. Every answer must group evidence under these exact headings when applicable: From your materials; From the official Lucerne/KSA syllabus; From approved online sources; Model inference/general background. State missing or conflicting evidence explicitly.
+
+GRADING PROMPT
+
+## prompt
+Grade this practice answer for SPF Biology in German.
+Question: Explain the nucleus.
+Student answer: It stores DNA.
+Maximum points: 4
+Marking scheme: 2p DNA, 2p control center
+Criteria: Use source material.
+Relevant context: # Biology Sample
+
+Cells contain a nucleus, cytoplasm, and membranes. The nucleus stores DNA and helps control cell activity.
+
+Return points achieved, Swiss grade, strengths, missing points, and an improved answer. Warn that this is practice feedback only. Source priority rules:
+1. Use teacher-provided/user-provided learning material and exam criteria first.
+2. Use user learning goals second.
+3. Use official KSA/Lucerne syllabus sources only to fill gaps.
+4. Use public web sources only when internet mode is enabled.
+5. Use general model knowledge only when needed and clearly label it as general background.
+Say clearly when user material is missing or insufficient. Show sources. Do not pretend image OCR or audio transcripts are complete when uncertain. Use only the provided notes, syllabus, learning goals, exam criteria, retrieved sources, and local performance context. If source material is insufficient, say that clearly. Include source file names, pages, modalities, and URLs when possible. Do not invent exam rules that are not present in the sources. Every answer must group evidence under these exact headings when applicable: From your materials; From the official Lucerne/KSA syllabus; From approved online sources; Model inference/general background. State missing or conflicting evidence explicitly.
+

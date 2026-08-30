@@ -1,0 +1,5 @@
+PASS: register/login/logout primitives work
+PASS: per-user folder structure created
+PASS: password is not plaintext
+PASS: app and docs modules import
+

@@ -1,0 +1,6 @@
+PASS: config loads gemma3:4b defaults
+PASS: fake learning material discovered and grouped
+PASS: fake multimodal chunks retrieved with source layers
+PASS: fake syllabus fallback and performance memory included
+PASS: quiz and grading path completed without external tools
+

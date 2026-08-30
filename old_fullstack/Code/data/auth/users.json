@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "user_id": "alim",
+      "username": "Alim",
+      "created_at": "2026-07-15T16:35:29+00:00",
+      "password_hash": {
+        "algorithm": "pbkdf2_hmac_sha256",
+        "iterations": 200000,
+        "salt": "9f27e9f463752049629903242e75047b",
+        "hash": "7b177b2ed8edc89f1dce69a29e1da17437cf040e6cb396804fb4f1de0cef26db"
+      },
+      "template_source_user_id": null,
+      "role": "student"
+    }
+  ]
+}

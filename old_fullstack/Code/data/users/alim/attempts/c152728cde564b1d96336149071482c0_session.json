@@ -1,0 +1,14 @@
+{
+  "attempt_id": "c152728cde564b1d96336149071482c0",
+  "user_id": "alim",
+  "subject_key": "history",
+  "mode": "quiz",
+  "started_at": "2026-07-15T16:42:44+00:00",
+  "ends_at": "2026-07-15T17:02:44+00:00",
+  "duration_seconds": 1200,
+  "status": "running",
+  "question_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/quizzes/866c9ca8efac4553826951724e7f7c7a.json",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/866c9ca8efac4553826951724e7f7c7a.json",
+  "submitted_answers_path": null,
+  "grading_report_path": null
+}

@@ -1,0 +1,14 @@
+{
+  "attempt_id": "4a455937bd154d2f959e8fd7ea4ec22a",
+  "user_id": "alim",
+  "subject_key": "chemistry",
+  "mode": "quiz",
+  "started_at": "2026-07-15T16:36:07+00:00",
+  "ends_at": "2026-07-15T16:56:07+00:00",
+  "duration_seconds": 1200,
+  "status": "graded",
+  "question_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/quizzes/4f2d8e3ccd3a4c81ab7055626220c977.json",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/4f2d8e3ccd3a4c81ab7055626220c977.json",
+  "submitted_answers_path": "attempts",
+  "grading_report_path": "reports/performance_reports.jsonl"
+}

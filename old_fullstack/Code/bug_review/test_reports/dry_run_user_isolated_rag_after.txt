@@ -1,0 +1,4 @@
+PASS: template material copied
+PASS: isolated chat history indexed
+PASS: query only returned current user memory
+

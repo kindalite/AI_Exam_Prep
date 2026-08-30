@@ -1,0 +1,2931 @@
+{
+  "components": {
+    "schemas": {
+      "AvailableTimeSlot": {
+        "additionalProperties": false,
+        "description": "One frontend-provided local study window in 24-hour HH:MM format.",
+        "properties": {
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "end_time": {
+            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+            "title": "End Time",
+            "type": "string"
+          },
+          "start_time": {
+            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+            "title": "Start Time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "start_time",
+          "end_time"
+        ],
+        "title": "AvailableTimeSlot",
+        "type": "object"
+      },
+      "BackendHealth": {
+        "additionalProperties": false,
+        "description": "Process and dependency health response.",
+        "properties": {
+          "api_version": {
+            "title": "Api Version",
+            "type": "string"
+          },
+          "checked_at": {
+            "format": "date-time",
+            "title": "Checked At",
+            "type": "string"
+          },
+          "indexed_top_level_subjects": {
+            "maximum": 15.0,
+            "minimum": 0.0,
+            "title": "Indexed Top Level Subjects",
+            "type": "integer"
+          },
+          "model_provider": {
+            "title": "Model Provider",
+            "type": "string"
+          },
+          "model_server_reachable": {
+            "title": "Model Server Reachable",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "degraded",
+              "error"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "uptime_seconds": {
+            "minimum": 0.0,
+            "title": "Uptime Seconds",
+            "type": "number"
+          },
+          "vector_store": {
+            "$ref": "#/components/schemas/VectorStoreStatus"
+          }
+        },
+        "required": [
+          "status",
+          "api_version",
+          "uptime_seconds",
+          "vector_store",
+          "model_server_reachable",
+          "model_provider",
+          "indexed_top_level_subjects",
+          "checked_at"
+        ],
+        "title": "BackendHealth",
+        "type": "object"
+      },
+      "Body_import_document_api_import_document_post": {
+        "properties": {
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "section": {
+            "title": "Section",
+            "type": "string"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "subject_id",
+          "section",
+          "language"
+        ],
+        "title": "Body_import_document_api_import_document_post",
+        "type": "object"
+      },
+      "ChatRequest": {
+        "additionalProperties": false,
+        "description": "Non-streaming or streaming subject-chat request.",
+        "properties": {
+          "academic_year": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Academic Year",
+            "type": "string"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "grade_level": {
+            "maximum": 13.0,
+            "minimum": 1.0,
+            "title": "Grade Level",
+            "type": "integer"
+          },
+          "include_sources": {
+            "default": true,
+            "title": "Include Sources",
+            "type": "boolean"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "stream": {
+            "default": false,
+            "title": "Stream",
+            "type": "boolean"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "thread_id": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Thread Id",
+            "type": "string"
+          },
+          "top_k": {
+            "default": 6,
+            "maximum": 24.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "subject_id",
+          "language",
+          "academic_year",
+          "grade_level",
+          "thread_id",
+          "question"
+        ],
+        "title": "ChatRequest",
+        "type": "object"
+      },
+      "ChatResponse": {
+        "additionalProperties": false,
+        "description": "Grounded assistant answer returned without owning transcript storage.",
+        "properties": {
+          "answer": {
+            "title": "Answer",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "exam_tip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exam Tip"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "message_id": {
+            "title": "Message Id",
+            "type": "string"
+          },
+          "retrieval_summary": {
+            "$ref": "#/components/schemas/RetrievalSummary"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSnippet"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "thread_id": {
+            "title": "Thread Id",
+            "type": "string"
+          },
+          "used_model": {
+            "title": "Used Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "thread_id",
+          "message_id",
+          "answer",
+          "used_model",
+          "retrieval_summary",
+          "language",
+          "created_at"
+        ],
+        "title": "ChatResponse",
+        "type": "object"
+      },
+      "DocumentImportResponse": {
+        "additionalProperties": false,
+        "description": "API-shaped result of one parsed and indexed upload.",
+        "properties": {
+          "added_at": {
+            "format": "date-time",
+            "title": "Added At",
+            "type": "string"
+          },
+          "chunks_indexed": {
+            "minimum": 0.0,
+            "title": "Chunks Indexed",
+            "type": "integer"
+          },
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "material_id": {
+            "title": "Material Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pages": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pages"
+          },
+          "section": {
+            "title": "Section",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "indexed",
+              "needs_review"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "material_id",
+          "name",
+          "type",
+          "section",
+          "language",
+          "chunks_indexed",
+          "status",
+          "added_at"
+        ],
+        "title": "DocumentImportResponse",
+        "type": "object"
+      },
+      "FeedbackEntry": {
+        "additionalProperties": false,
+        "description": "Privacy-minimal feedback tied to an optional AI result correlation ID.",
+        "properties": {
+          "app_version": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "App Version"
+          },
+          "category": {
+            "enum": [
+              "answer_quality",
+              "bug",
+              "feature_request",
+              "content_gap",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "enum": [
+                  "de",
+                  "en",
+                  "fr"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "message_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message Id"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating"
+          },
+          "route": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Route"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          },
+          "thread_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thread Id"
+          }
+        },
+        "required": [
+          "category"
+        ],
+        "title": "FeedbackEntry",
+        "type": "object"
+      },
+      "FeedbackResponse": {
+        "additionalProperties": false,
+        "description": "Feedback persistence acknowledgement.",
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "feedback_id": {
+            "title": "Feedback Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "feedback_id",
+          "created_at"
+        ],
+        "title": "FeedbackResponse",
+        "type": "object"
+      },
+      "GradingRequest": {
+        "additionalProperties": false,
+        "description": "Answer and rubric context submitted for AI practice grading.",
+        "properties": {
+          "academic_year": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Academic Year",
+            "type": "string"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "grade_level": {
+            "maximum": 13.0,
+            "minimum": 1.0,
+            "title": "Grade Level",
+            "type": "integer"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "marking_scheme": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Marking Scheme"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          },
+          "max_points": {
+            "exclusiveMinimum": 0.0,
+            "title": "Max Points",
+            "type": "number"
+          },
+          "question": {
+            "maxLength": 12000,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "student_answer": {
+            "maxLength": 30000,
+            "minLength": 1,
+            "title": "Student Answer",
+            "type": "string"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject_id",
+          "language",
+          "academic_year",
+          "grade_level",
+          "question",
+          "student_answer",
+          "max_points"
+        ],
+        "title": "GradingRequest",
+        "type": "object"
+      },
+      "GradingResult": {
+        "additionalProperties": false,
+        "description": "Structured evaluation with the unrounded Swiss formula value.",
+        "properties": {
+          "grade_formula": {
+            "title": "Grade Formula",
+            "type": "string"
+          },
+          "graded_at": {
+            "format": "date-time",
+            "title": "Graded At",
+            "type": "string"
+          },
+          "improvement_advice": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Improvement Advice",
+            "type": "array"
+          },
+          "max_points": {
+            "exclusiveMinimum": 0.0,
+            "title": "Max Points",
+            "type": "number"
+          },
+          "missing_points": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Points",
+            "type": "array"
+          },
+          "points_awarded": {
+            "minimum": 0.0,
+            "title": "Points Awarded",
+            "type": "number"
+          },
+          "rubric_used": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Rubric Used",
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSnippet"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "strengths": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Strengths",
+            "type": "array"
+          },
+          "swiss_grade": {
+            "maximum": 6.0,
+            "minimum": 1.0,
+            "title": "Swiss Grade",
+            "type": "number"
+          },
+          "used_model": {
+            "title": "Used Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "points_awarded",
+          "max_points",
+          "swiss_grade",
+          "grade_formula",
+          "graded_at",
+          "used_model"
+        ],
+        "title": "GradingResult",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "LearningGoalModel": {
+        "additionalProperties": false,
+        "description": "Structured learning goal owned by the Python backend.",
+        "properties": {
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "learning_goal_id": {
+            "title": "Learning Goal Id",
+            "type": "string"
+          },
+          "order": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Order",
+            "type": "integer"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MaterialSourceModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "learning_goal_id",
+          "subject_id",
+          "title",
+          "text"
+        ],
+        "title": "LearningGoalModel",
+        "type": "object"
+      },
+      "MaterialModel": {
+        "additionalProperties": false,
+        "description": "One uploaded or canonical material item and its index state.",
+        "properties": {
+          "archived": {
+            "default": false,
+            "title": "Archived",
+            "type": "boolean"
+          },
+          "chunks_indexed": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Chunks Indexed",
+            "type": "integer"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "file_name": {
+            "title": "File Name",
+            "type": "string"
+          },
+          "indexed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indexed At"
+          },
+          "material_id": {
+            "title": "Material Id",
+            "type": "string"
+          },
+          "material_name": {
+            "title": "Material Name",
+            "type": "string"
+          },
+          "media_type": {
+            "title": "Media Type",
+            "type": "string"
+          },
+          "section": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Section"
+          },
+          "size_bytes": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bytes"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/MaterialSourceModel"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "uploaded",
+              "indexing",
+              "indexed",
+              "failed",
+              "needs_review"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          }
+        },
+        "required": [
+          "material_id",
+          "subject_id",
+          "material_name",
+          "file_name",
+          "media_type",
+          "status",
+          "created_at"
+        ],
+        "title": "MaterialModel",
+        "type": "object"
+      },
+      "MaterialSourceModel": {
+        "additionalProperties": false,
+        "description": "Citation-oriented metadata for material content.",
+        "properties": {
+          "modality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modality"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_layer": {
+            "title": "Source Layer",
+            "type": "string"
+          },
+          "source_name": {
+            "title": "Source Name",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "required": [
+          "source_id",
+          "source_name",
+          "source_layer"
+        ],
+        "title": "MaterialSourceModel",
+        "type": "object"
+      },
+      "MockExam": {
+        "additionalProperties": false,
+        "description": "Generated mock-exam payload.",
+        "properties": {
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "difficulty": {
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "adaptive"
+            ],
+            "title": "Difficulty",
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "mock_exam_id": {
+            "title": "Mock Exam Id",
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/MockExamQuestion"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSnippet"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "total_points": {
+            "exclusiveMinimum": 0.0,
+            "title": "Total Points",
+            "type": "number"
+          },
+          "used_model": {
+            "title": "Used Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mock_exam_id",
+          "subject_id",
+          "language",
+          "title",
+          "difficulty",
+          "total_points",
+          "questions",
+          "used_model",
+          "created_at"
+        ],
+        "title": "MockExam",
+        "type": "object"
+      },
+      "MockExamQuestion": {
+        "additionalProperties": false,
+        "description": "One typed mock-exam question with explicit point allocation.",
+        "properties": {
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "marking_criteria": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Marking Criteria",
+            "type": "array"
+          },
+          "model_answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Answer"
+          },
+          "options": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "points": {
+            "exclusiveMinimum": 0.0,
+            "title": "Points",
+            "type": "number"
+          },
+          "prompt": {
+            "title": "Prompt",
+            "type": "string"
+          },
+          "question_id": {
+            "title": "Question Id",
+            "type": "string"
+          },
+          "question_type": {
+            "enum": [
+              "multiple_choice",
+              "short_answer",
+              "long_answer",
+              "true_false"
+            ],
+            "title": "Question Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_id",
+          "question_type",
+          "prompt",
+          "points"
+        ],
+        "title": "MockExamQuestion",
+        "type": "object"
+      },
+      "MockExamRequest": {
+        "additionalProperties": false,
+        "description": "User-scoped structured mock-exam generation request.",
+        "properties": {
+          "academic_year": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Academic Year",
+            "type": "string"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "difficulty": {
+            "default": "adaptive",
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "adaptive"
+            ],
+            "title": "Difficulty",
+            "type": "string"
+          },
+          "grade_level": {
+            "maximum": 13.0,
+            "minimum": 1.0,
+            "title": "Grade Level",
+            "type": "integer"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "learning_goal_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Learning Goal Ids",
+            "type": "array"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "topics": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Topics",
+            "type": "array"
+          },
+          "total_points": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 500.0,
+            "title": "Total Points",
+            "type": "number"
+          }
+        },
+        "required": [
+          "subject_id",
+          "language",
+          "academic_year",
+          "grade_level",
+          "total_points"
+        ],
+        "title": "MockExamRequest",
+        "type": "object"
+      },
+      "ModelStatus": {
+        "additionalProperties": false,
+        "description": "Safe provider-neutral model status.",
+        "properties": {
+          "embedding_model": {
+            "title": "Embedding Model",
+            "type": "string"
+          },
+          "endpoint": {
+            "title": "Endpoint",
+            "type": "string"
+          },
+          "fallback_provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fallback Provider"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "number"
+          },
+          "message": {
+            "default": "",
+            "title": "Message",
+            "type": "string"
+          },
+          "mode": {
+            "enum": [
+              "local",
+              "remote"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "reachable": {
+            "title": "Reachable",
+            "type": "boolean"
+          },
+          "supports_streaming": {
+            "default": false,
+            "title": "Supports Streaming",
+            "type": "boolean"
+          },
+          "supports_vision": {
+            "default": false,
+            "title": "Supports Vision",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "provider",
+          "model",
+          "endpoint",
+          "mode",
+          "reachable",
+          "latency_ms",
+          "embedding_model"
+        ],
+        "title": "ModelStatus",
+        "type": "object"
+      },
+      "Quiz": {
+        "additionalProperties": false,
+        "description": "Generated quiz payload.",
+        "properties": {
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "difficulty": {
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "adaptive"
+            ],
+            "title": "Difficulty",
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/QuizQuestion"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "quiz_id": {
+            "title": "Quiz Id",
+            "type": "string"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSnippet"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "used_model": {
+            "title": "Used Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "quiz_id",
+          "subject_id",
+          "language",
+          "title",
+          "difficulty",
+          "questions",
+          "used_model",
+          "created_at"
+        ],
+        "title": "Quiz",
+        "type": "object"
+      },
+      "QuizQuestion": {
+        "additionalProperties": false,
+        "description": "One typed quiz question from the frontend contract.",
+        "properties": {
+          "correct_answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correct Answer"
+          },
+          "correct_index": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correct Index"
+          },
+          "expected_answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Answer"
+          },
+          "explanation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Explanation"
+          },
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "options": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "points": {
+            "default": 1,
+            "exclusiveMinimum": 0.0,
+            "title": "Points",
+            "type": "number"
+          },
+          "prompt": {
+            "title": "Prompt",
+            "type": "string"
+          },
+          "question_id": {
+            "title": "Question Id",
+            "type": "string"
+          },
+          "question_type": {
+            "enum": [
+              "multiple_choice",
+              "short_answer",
+              "long_answer",
+              "true_false"
+            ],
+            "title": "Question Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question_id",
+          "question_type",
+          "prompt"
+        ],
+        "title": "QuizQuestion",
+        "type": "object"
+      },
+      "QuizRequest": {
+        "additionalProperties": false,
+        "description": "User-scoped structured quiz-generation request.",
+        "properties": {
+          "academic_year": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Academic Year",
+            "type": "string"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "difficulty": {
+            "default": "adaptive",
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "adaptive"
+            ],
+            "title": "Difficulty",
+            "type": "string"
+          },
+          "grade_level": {
+            "maximum": 13.0,
+            "minimum": 1.0,
+            "title": "Grade Level",
+            "type": "integer"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          },
+          "question_count": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Question Count",
+            "type": "integer"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "topic": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic"
+          }
+        },
+        "required": [
+          "subject_id",
+          "language",
+          "academic_year",
+          "grade_level"
+        ],
+        "title": "QuizRequest",
+        "type": "object"
+      },
+      "RetrievalSummary": {
+        "additionalProperties": false,
+        "description": "Transparent summary of retrieval work for a generated answer.",
+        "properties": {
+          "chunks_considered": {
+            "minimum": 0.0,
+            "title": "Chunks Considered",
+            "type": "integer"
+          },
+          "chunks_used": {
+            "minimum": 0.0,
+            "title": "Chunks Used",
+            "type": "integer"
+          },
+          "collection_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Collection Names",
+            "type": "array"
+          },
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "chunks_considered",
+          "chunks_used"
+        ],
+        "title": "RetrievalSummary",
+        "type": "object"
+      },
+      "SourceSnippet": {
+        "additionalProperties": false,
+        "description": "A source excerpt grounded in real retrieval metadata.",
+        "properties": {
+          "material_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Material Id"
+          },
+          "material_name": {
+            "title": "Material Name",
+            "type": "string"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "section": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Section"
+          },
+          "snippet": {
+            "title": "Snippet",
+            "type": "string"
+          },
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "required": [
+          "source_id",
+          "material_name",
+          "snippet"
+        ],
+        "title": "SourceSnippet",
+        "type": "object"
+      },
+      "StudyPlan": {
+        "additionalProperties": false,
+        "description": "AI-generated plan proposal returned to the frontend.",
+        "properties": {
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "exam_date": {
+            "format": "date",
+            "title": "Exam Date",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/StudyPlanItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSnippet"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "study_plan_id": {
+            "title": "Study Plan Id",
+            "type": "string"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "used_model": {
+            "title": "Used Model",
+            "type": "string"
+          }
+        },
+        "required": [
+          "study_plan_id",
+          "subject_id",
+          "language",
+          "exam_date",
+          "items",
+          "summary",
+          "used_model",
+          "created_at"
+        ],
+        "title": "StudyPlan",
+        "type": "object"
+      },
+      "StudyPlanItem": {
+        "additionalProperties": false,
+        "description": "One proposed study action.",
+        "properties": {
+          "activity_type": {
+            "enum": [
+              "review",
+              "practice",
+              "quiz",
+              "mock_exam",
+              "break"
+            ],
+            "title": "Activity Type",
+            "type": "string"
+          },
+          "date": {
+            "format": "date",
+            "title": "Date",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "duration_minutes": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1440.0,
+            "title": "Duration Minutes",
+            "type": "integer"
+          },
+          "end_time": {
+            "anyOf": [
+              {
+                "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Time"
+          },
+          "item_id": {
+            "title": "Item Id",
+            "type": "string"
+          },
+          "learning_goal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learning Goal Id"
+          },
+          "start_time": {
+            "anyOf": [
+              {
+                "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "item_id",
+          "date",
+          "title",
+          "description",
+          "duration_minutes",
+          "activity_type"
+        ],
+        "title": "StudyPlanItem",
+        "type": "object"
+      },
+      "StudyPlanRequest": {
+        "additionalProperties": false,
+        "description": "Request for a proposal; it never writes frontend planner state.",
+        "properties": {
+          "academic_year": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Academic Year",
+            "type": "string"
+          },
+          "available_time_slots": {
+            "items": {
+              "$ref": "#/components/schemas/AvailableTimeSlot"
+            },
+            "maxItems": 100,
+            "title": "Available Time Slots",
+            "type": "array"
+          },
+          "component_subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Subject Id"
+          },
+          "exam_date": {
+            "format": "date",
+            "title": "Exam Date",
+            "type": "string"
+          },
+          "grade_level": {
+            "maximum": 13.0,
+            "minimum": 1.0,
+            "title": "Grade Level",
+            "type": "integer"
+          },
+          "hours_per_week": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 168.0,
+            "title": "Hours Per Week",
+            "type": "number"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "learning_goal_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Learning Goal Ids",
+            "type": "array"
+          },
+          "material_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Material Ids",
+            "type": "array"
+          },
+          "max_daily_minutes": {
+            "default": 120,
+            "maximum": 720.0,
+            "minimum": 15.0,
+            "title": "Max Daily Minutes",
+            "type": "integer"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "weak_topics": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Weak Topics",
+            "type": "array"
+          }
+        },
+        "required": [
+          "subject_id",
+          "language",
+          "academic_year",
+          "grade_level",
+          "exam_date",
+          "hours_per_week"
+        ],
+        "title": "StudyPlanRequest",
+        "type": "object"
+      },
+      "SubjectComponentModel": {
+        "additionalProperties": false,
+        "description": "Nested concrete component of the virtual SPF subject.",
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject_id",
+          "display_name",
+          "language"
+        ],
+        "title": "SubjectComponentModel",
+        "type": "object"
+      },
+      "SubjectModel": {
+        "additionalProperties": false,
+        "description": "One top-level subject exposed to the frontend.",
+        "properties": {
+          "components": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectComponentModel"
+            },
+            "title": "Components",
+            "type": "array"
+          },
+          "corpus_keys": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Corpus Keys",
+            "type": "array"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "indexed_materials": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Indexed Materials",
+            "type": "integer"
+          },
+          "is_virtual": {
+            "default": false,
+            "title": "Is Virtual",
+            "type": "boolean"
+          },
+          "language": {
+            "enum": [
+              "de",
+              "en",
+              "fr"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "last_indexed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Indexed At"
+          },
+          "learning_goal_count": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Learning Goal Count",
+            "type": "integer"
+          },
+          "subject_id": {
+            "title": "Subject Id",
+            "type": "string"
+          },
+          "topics": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Topics",
+            "type": "array"
+          }
+        },
+        "required": [
+          "subject_id",
+          "display_name",
+          "language"
+        ],
+        "title": "SubjectModel",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VectorStoreStatus": {
+        "additionalProperties": false,
+        "description": "Safe vector-store status included in backend health.",
+        "properties": {
+          "collection_count": {
+            "minimum": 0.0,
+            "title": "Collection Count",
+            "type": "integer"
+          },
+          "collection_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Collection Names",
+            "type": "array"
+          },
+          "message": {
+            "default": "",
+            "title": "Message",
+            "type": "string"
+          },
+          "reachable": {
+            "title": "Reachable",
+            "type": "boolean"
+          },
+          "store_type": {
+            "title": "Store Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "store_type",
+          "reachable",
+          "collection_count"
+        ],
+        "title": "VectorStoreStatus",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Local Python AI/RAG backend for the Lovable frontend.",
+    "title": "Alim Study Assistant API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/chat": {
+      "post": {
+        "description": "Generate one grounded answer without persisting an authoritative transcript.",
+        "operationId": "chat_api_chat_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              },
+              "text/event-stream": {}
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Chat",
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/api/feedback": {
+      "post": {
+        "description": "Append feedback without copying referenced prompt or answer content.",
+        "operationId": "submit_feedback_api_feedback_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackEntry"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit Feedback",
+        "tags": [
+          "feedback"
+        ]
+      }
+    },
+    "/api/grade": {
+      "post": {
+        "operationId": "grade_api_grade_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradingResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Grade",
+        "tags": [
+          "study_tools"
+        ]
+      }
+    },
+    "/api/import/document": {
+      "post": {
+        "description": "Stream, parse, and rebuild only the identified student's corpus.",
+        "operationId": "import_document_api_import_document_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_document_api_import_document_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentImportResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Import Document",
+        "tags": [
+          "materials"
+        ]
+      }
+    },
+    "/api/mock-exam/generate": {
+      "post": {
+        "operationId": "generate_mock_exam_api_mock_exam_generate_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MockExamRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockExam"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Mock Exam",
+        "tags": [
+          "study_tools"
+        ]
+      }
+    },
+    "/api/model/status": {
+      "get": {
+        "description": "Return safe model/provider status without requiring student identity.",
+        "operationId": "model_status_api_model_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Model Status",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/quiz/generate": {
+      "post": {
+        "operationId": "generate_quiz_api_quiz_generate_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuizRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Quiz",
+        "tags": [
+          "study_tools"
+        ]
+      }
+    },
+    "/api/study-plan/generate": {
+      "post": {
+        "operationId": "generate_study_plan_api_study_plan_generate_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudyPlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyPlan"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Study Plan",
+        "tags": [
+          "study_tools"
+        ]
+      }
+    },
+    "/api/subjects": {
+      "get": {
+        "description": "Return exactly 15 top-level subjects; omit private metadata when anonymous.",
+        "operationId": "list_subject_catalog_api_subjects_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectModel"
+                  },
+                  "title": "Response List Subject Catalog Api Subjects Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Subject Catalog",
+        "tags": [
+          "subjects"
+        ]
+      }
+    },
+    "/api/subjects/{subject_id}": {
+      "get": {
+        "description": "Return aggregate or component-specific corpus metadata.",
+        "operationId": "get_subject_detail_api_subjects__subject_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subject_id",
+            "required": true,
+            "schema": {
+              "title": "Subject Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "component_subject_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Component Subject Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectModel"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Subject Detail",
+        "tags": [
+          "subjects"
+        ]
+      }
+    },
+    "/api/subjects/{subject_id}/learning-goals": {
+      "get": {
+        "description": "Return user-specific goals when identified, otherwise canonical goals.",
+        "operationId": "get_learning_goals_api_subjects__subject_id__learning_goals_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subject_id",
+            "required": true,
+            "schema": {
+              "title": "Subject Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "component_subject_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Component Subject Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "topic",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Topic"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/LearningGoalModel"
+                  },
+                  "title": "Response Get Learning Goals Api Subjects  Subject Id  Learning Goals Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Learning Goals",
+        "tags": [
+          "subjects"
+        ]
+      }
+    },
+    "/api/subjects/{subject_id}/materials": {
+      "get": {
+        "description": "Return canonical-only material anonymously or isolated user material with identity.",
+        "operationId": "get_materials_api_subjects__subject_id__materials_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subject_id",
+            "required": true,
+            "schema": {
+              "title": "Subject Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "component_subject_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Component Subject Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "section",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Section"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_archived",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Archived",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Student-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Student-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MaterialModel"
+                  },
+                  "title": "Response Get Materials Api Subjects  Subject Id  Materials Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Materials",
+        "tags": [
+          "subjects"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Return process liveness plus safe dependency status.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackendHealth"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "health"
+        ]
+      }
+    }
+  }
+}

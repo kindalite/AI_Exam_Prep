@@ -1,0 +1,14 @@
+{
+  "attempt_id": "f20a1be165aa41d5a28b9847a6055978",
+  "user_id": "alim",
+  "subject_key": "chemistry",
+  "mode": "exam",
+  "started_at": "2026-07-27T07:37:29+00:00",
+  "ends_at": "2026-07-27T08:22:29+00:00",
+  "duration_seconds": 2700,
+  "status": "running",
+  "question_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/exams/805ba9aaf78f498cb47576de02e60fb0.json",
+  "solution_set_path": "/home/kindalite/AI_Exam_Prep/Code/data/users/alim/generated_practice/solution_sets/805ba9aaf78f498cb47576de02e60fb0.json",
+  "submitted_answers_path": null,
+  "grading_report_path": null
+}
